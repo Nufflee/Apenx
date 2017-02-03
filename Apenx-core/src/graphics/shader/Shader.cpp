@@ -67,14 +67,52 @@ namespace apenx
 			return program;
 		}
 
-		void Shader::enable() const
+		GLint Shader::getUniformLocation(const GLchar *name)
 		{
-			glUseProgram(m_ShaderID);
+			if (!m_Enabled)
+			{
+				std::cout << "Shader is not enabled!" << std::endl;
+				return -1;
+			}
+
+			return glGetUniformLocation(getShaderID(), name);
 		}
 
-		void Shader::disable() const
+		void Shader::setUniform1f(const GLchar *name, float value)
+		{
+			glUniform1f(getUniformLocation(name), value);
+		}
+		void Shader::setUniform1i(const GLchar *name, int value)
+		{
+			glUniform1i(getUniformLocation(name), value);
+		}
+		void Shader::setUniform2f(const GLchar *name, glm::vec2 &vector)
+		{
+			glUniform2f(getUniformLocation(name), vector.x, vector.y);
+		}
+		void Shader::setUniform3f(const GLchar *name, glm::vec3 &vector)
+		{
+			glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
+		}
+		void Shader::setUniform3f(const GLchar *name, glm::vec4 &vector)
+		{
+			glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
+		}
+		void Shader::setUnifromMat4(const GLchar *name, const glm::mat4 &matrix)
+		{
+			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
+		}
+
+		void Shader::enable()
+		{
+			glUseProgram(m_ShaderID);
+			m_Enabled = true;
+		}
+
+		void Shader::disable()
 		{
 			glUseProgram(0);
+			m_Enabled = false;
 		}
 
 		Shader::~Shader()

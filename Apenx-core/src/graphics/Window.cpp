@@ -45,6 +45,9 @@ namespace apenx
 			glfwSetWindowUserPointer(m_Window, this);
 			glfwMakeContextCurrent(m_Window);
 
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+
 			if (glewInit() != GLEW_OK)
 			{
 				std::cout << "Failed to initialize GLEW! Error code: " << glGetError() << std::endl;
